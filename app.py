@@ -1,28 +1,44 @@
-import psycopg2
-import psycopg2.extras
+from flask import Flask, render_template, request, redirect, url_for, session
+from db_config import get_db_connection
+from datetime import datetime
+import hashlib
 
-# Conexão com o banco de dados PostgreSQL
-conn = psycopg2.connect(
-    host='localhost',
-    user='postgres',
-    password='DragoN12$%',
-    database='caixa_fluxo',
-    port=5433  # padrão PostgreSQL
-)
+app = Flask(__name__)
+app.secret_key = 'chave_super_secreta'
 
-cursor = conn.cursor()
+# Usuário fixo (podemos migrar pro banco depois)
+USUARIO = {
+    "username": "admin",
+    "password": hashlib.sha256("1234".encode()).hexdigest()  # senha: 1234
+}
 
-def adicionar_entrada(descricao, valor):
-    cursor.execute("INSERT INTO entradas (descricao, valor) VALUES (%s, %s)", (descricao, valor))
-    conn.commit()
-    print("Entrada adicionada com sucesso.")
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        senha = request.form['senha']
+        senha_hash = hashlib.sha256(senha.encode()).hexdigest()
 
-def adicionar_saida(descricao, valor):
-    cursor.execute("INSERT INTO saidas (descricao, valor) VALUES (%s, %s)", (descricao, valor))
-    conn.commit()
-    print("Saída adicionada com sucesso.")
+        if usuario == USUARIO['username'] and senha_hash == USUARIO['password']:
+            session['usuario'] = usuario
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('login.html', erro='Usuário ou senha inválidos')
+    return render_template('login.html')
 
-def calcular_fluxo():
+@app.route('/logout')
+def logout():
+    session.pop('usuario', None)
+    return redirect(url_for('login'))
+
+@app.route('/dashboard')
+def dashboard():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
     cursor.execute("SELECT SUM(valor) FROM entradas")
     total_entradas = cursor.fetchone()[0] or 0
 
@@ -30,39 +46,11 @@ def calcular_fluxo():
     total_saidas = cursor.fetchone()[0] or 0
 
     saldo = total_entradas - total_saidas
-    print(f"\nTotal de Entradas: R$ {total_entradas:.2f}")
-    print(f"Total de Saídas: R$ {total_saidas:.2f}")
-    print(f"Saldo Final: R$ {saldo:.2f}")
 
-    if saldo > 0:
-        print("Situação: Lucro ✅")
-    elif saldo < 0:
-        print("Situação: Prejuízo ❌")
-    else:
-        print("Situação: Empate 😐")
+    cursor.close()
+    conn.close()
 
-# Exemplo de uso
-while True:
-    print("\n1. Adicionar Entrada")
-    print("2. Adicionar Saída")
-    print("3. Verificar Fluxo de Caixa")
-    print("4. Sair")
-    opcao = input("Escolha uma opção: ")
+    return render_template('dashboard.html', entradas=total_entradas, saidas=total_saidas, saldo=saldo)
 
-    if opcao == '1':
-        desc = input("Descrição da entrada: ")
-        valor = float(input("Valor: "))
-        adicionar_entrada(desc, valor)
-    elif opcao == '2':
-        desc = input("Descrição da saída: ")
-        valor = float(input("Valor: "))
-        adicionar_saida(desc, valor)
-    elif opcao == '3':
-        calcular_fluxo()
-    elif opcao == '4':
-        break
-    else:
-        print("Opção inválida, tente novamente.")
-
-cursor.close()
-conn.close()
+if __name__ == '__main__':
+    app.run(debug=True)

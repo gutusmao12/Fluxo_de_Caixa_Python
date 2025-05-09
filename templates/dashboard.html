@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head><title>Dashboard</title></head>
+<body>
+    <h2>Bem-vindo, {{ session['usuario'] }}!</h2>
+    <p><strong>Total de Entradas:</strong> R$ {{ entradas }}</p>
+    <p><strong>Total de Saídas:</strong> R$ {{ saidas }}</p>
+    <p><strong>Saldo:</strong> R$ {{ saldo }}</p>
+    <a href="/logout">Sair</a>
+</body>
+</html>
