@@ -8,8 +8,8 @@ app.secret_key = 'chave_super_secreta'
 
 # Usuário fixo (podemos migrar pro banco depois)
 USUARIO = {
-    "username": "admin",
-    "password": hashlib.sha256("1234".encode()).hexdigest()  # senha: 1234
+    "username": "Gustavo Vilela",
+    "password": hashlib.sha256("T3st$".encode()).hexdigest()  # senha: 1234
 }
 
 @app.route('/', methods=['GET', 'POST'])
@@ -51,6 +51,50 @@ def dashboard():
     conn.close()
 
     return render_template('dashboard.html', entradas=total_entradas, saidas=total_saidas, saldo=saldo)
+
+# --- ADICIONAR ENTRADA ---
+@app.route('/adicionar_entrada', methods=['GET', 'POST'])
+def adicionar_entrada():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        descricao = request.form['descricao']
+        valor = float(request.form['valor'])
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO entradas (descricao, valor) VALUES (%s, %s)", (descricao, valor))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('entrada.html')
+
+
+# --- ADICIONAR SAÍDA ---
+@app.route('/adicionar_saida', methods=['GET', 'POST'])
+def adicionar_saida():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        descricao = request.form['descricao']
+        valor = float(request.form['valor'])
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO saidas (descricao, valor) VALUES (%s, %s)", (descricao, valor))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('saida.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
