@@ -2,17 +2,22 @@
 <html>
 <head>
     <title>Adicionar Entrada</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h2>Adicionar Entrada</h2>
-    <form method="post">
-        <label>Descrição:</label><br>
-        <input type="text" name="descricao" required><br><br>
-        <label>Valor:</label><br>
-        <input type="number" name="valor" step="0.01" required><br><br>
-        <input type="submit" value="Adicionar">
-    </form>
-    <br>
-    <a href="/dashboard">Voltar ao Dashboard</a>
+    <div class="container">
+        <h2>Adicionar Entrada</h2>
+        <form method="POST">
+            <label>Descrição:</label><br>
+            <input type="text" name="descricao" required><br><br>
+
+            <label>Valor (R$):</label><br>
+            <input type="number" name="valor" step="0.01" required><br><br>
+
+            <input type="submit" value="Salvar" class="button">
+        </form>
+        <br>
+        <a href="/dashboard" class="button">⬅ Voltar</a>
+    </div>
 </body>
 </html>

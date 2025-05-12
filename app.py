@@ -8,9 +8,94 @@ app.secret_key = 'chave_super_secreta'
 
 # Usuário fixo (podemos migrar pro banco depois)
 USUARIO = {
-    "username": "Gustavo Vilela",
+    "username": "guga.vilelad@gmail.com",
     "password": hashlib.sha256("T3st$".encode()).hexdigest()  # senha: 1234
 }
+
+@app.template_filter('formata_data')
+def formata_data(data):
+    if data:
+        return data.strftime('%d/%m/%Y %H:%M:%S')
+    return ''
+
+
+
+@app.template_filter('formata_brl')
+def formata_brl(valor):
+    if valor is None:
+        return "R$ 0,00"
+    return f"R$ {valor:,.2f}".replace(",", "v").replace(".", ",").replace("v", ".")
+
+
+@app.route('/detalhamento')
+def detalhamento():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Buscar entradas
+    cursor.execute("SELECT descricao, valor, data FROM entradas ORDER BY data DESC")
+    entradas = cursor.fetchall()
+
+    # Buscar saídas
+    cursor.execute("SELECT descricao, valor, data FROM saidas ORDER BY data DESC")
+    saidas = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('detalhamento.html', entradas=entradas, saidas=saidas)
+
+# --- Editar Entrada ---
+@app.route('/editar_entrada/<descricao>', methods=['GET', 'POST'])
+def editar_entrada(descricao):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        novo_valor = request.form['valor']
+        nova_descricao = request.form['descricao']
+        cursor.execute("UPDATE entradas SET descricao = %s, valor = %s WHERE descricao = %s", (nova_descricao, novo_valor, descricao))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('detalhamento'))
+
+    cursor.execute("SELECT descricao, valor FROM entradas WHERE descricao = %s", (descricao,))
+    entrada = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return render_template('editar.html', tipo='entrada', item=entrada)
+
+
+# --- Editar Saída ---
+@app.route('/editar_saida/<descricao>', methods=['GET', 'POST'])
+def editar_saida(descricao):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        novo_valor = request.form['valor']
+        nova_descricao = request.form['descricao']
+        cursor.execute("UPDATE saidas SET descricao = %s, valor = %s WHERE descricao = %s", (nova_descricao, novo_valor, descricao))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('detalhamento'))
+
+    cursor.execute("SELECT descricao, valor FROM saidas WHERE descricao = %s", (descricao,))
+    saida = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return render_template('editar.html', tipo='saida', item=saida)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -52,7 +137,6 @@ def dashboard():
 
     return render_template('dashboard.html', entradas=total_entradas, saidas=total_saidas, saldo=saldo)
 
-# --- ADICIONAR ENTRADA ---
 @app.route('/adicionar_entrada', methods=['GET', 'POST'])
 def adicionar_entrada():
     if 'usuario' not in session:
@@ -73,8 +157,6 @@ def adicionar_entrada():
 
     return render_template('entrada.html')
 
-
-# --- ADICIONAR SAÍDA ---
 @app.route('/adicionar_saida', methods=['GET', 'POST'])
 def adicionar_saida():
     if 'usuario' not in session:

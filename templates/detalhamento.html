@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalhamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Detalhamento de Entradas e Saídas</h2>
+
+        <!-- Entradas -->
+<h3>Entradas</h3>
+<table>
+    <tr>
+        <th>Descrição</th>
+        <th>Valor (R$)</th>
+        <th>Data</th>
+        <th>Ações</th>
+    </tr>
+    {% for entrada in entradas %}
+    <tr>
+        <td>{{ entrada[0] }}</td>
+        <td>{{ entrada[1] | formata_brl }}</td>
+        <td>{{ entrada[2] | formata_data }}</td>
+        <td><a href="{{ url_for('editar_entrada', descricao=entrada[0]) }}" class="button">Editar</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- Saídas -->
+<h3>Saídas</h3>
+<table>
+    <tr>
+        <th>Descrição</th>
+        <th>Valor (R$)</th>
+        <th>Data</th>
+        <th>Ações</th>
+    </tr>
+    {% for saida in saidas %}
+    <tr>
+        <td>{{ saida[0]  }}</td>
+        <td>{{ saida[1] | formata_brl }}</td>
+        <td>{{ saida[2] | formata_data }}</td>
+        <td><a href="{{ url_for('editar_saida', descricao=saida[0]) }}" class="button">Editar</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+        <br>
+        <a href="/dashboard" class="button">⬅ Voltar</a>
+    </div>
+</body>
+</html>

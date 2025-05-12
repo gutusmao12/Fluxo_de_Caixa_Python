@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head><title>Dashboard</title></head>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 <body>
-    <h2>Bem-vindo, {{ session['usuario'] }}!</h2>
-    <p><strong>Total de Entradas:</strong> R$ {{ entradas }}</p>
-    <p><strong>Total de Saídas:</strong> R$ {{ saidas }}</p>
-    <p><strong>Saldo:</strong> R$ {{ saldo }}</p>
-    <p><a href="/adicionar_entrada">➕ Adicionar Entrada</a></p>
-    <p><a href="/adicionar_saida">➖ Adicionar Saída</a></p>
-    <a href="/logout">Sair</a>
+    <div class="container">
+        <h2>Bem-vindo, {{ session['usuario'] }}!</h2>
+
+        <div class="info"><strong>Total de Entradas:</strong> R$ {{ entradas | formata_brl }}</div>
+        <div class="info"><strong>Total de Saídas:</strong> R$ {{ saidas | formata_brl }}</div>
+        <div class="info"><strong>Saldo:</strong> R$ {{ saldo | formata_brl }}</div>
+
+        <a href="/adicionar_entrada" class="button">➕ Entrada</a>
+        <a href="/adicionar_saida" class="button">➖ Saída</a>
+        <a href="/detalhamento" class="button">📋 Detalhamento</a>
+        <br><br>
+        <a href="/logout">Sair</a>
+    </div>
 </body>
 </html>
