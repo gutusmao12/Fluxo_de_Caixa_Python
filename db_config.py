@@ -1,5 +1,8 @@
 import psycopg2
 import os
+from dotenv import load_dotenv
+
+load_dotenv() #Carrega as variáveis do .env
 
 def get_db_connection():
     url = os.getenv("DATABASE_URL")
