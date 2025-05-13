@@ -15,7 +15,7 @@ USUARIO = {
 @app.template_filter('formata_data')
 def formata_data(data):
     if data:
-        return data.strftime('%d/%m/%Y %H:%M:%S')
+        return data.strftime('%d/%m/%Y')
     return ''
 
 
