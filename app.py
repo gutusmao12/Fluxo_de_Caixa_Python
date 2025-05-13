@@ -145,10 +145,11 @@ def adicionar_entrada():
     if request.method == 'POST':
         descricao = request.form['descricao']
         valor = float(request.form['valor'])
+        data = request.form['data']
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO entradas (descricao, valor) VALUES (%s, %s)", (descricao, valor))
+        cursor.execute("INSERT INTO entradas (descricao, valor, data) VALUES (%s, %s, %s)", (descricao, valor, data))
         conn.commit()
         cursor.close()
         conn.close()
@@ -165,15 +166,16 @@ def adicionar_saida():
     if request.method == 'POST':
         descricao = request.form['descricao']
         valor = float(request.form['valor'])
+        data = request.form['data']
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO saidas (descricao, valor) VALUES (%s, %s)", (descricao, valor))
+        cursor.execute("INSERT INTO entradas (descricao, valor, data) VALUES (%s, %s, %s)", (descricao, valor, data))
         conn.commit()
         cursor.close()
         conn.close()
 
-        return redirect(url_for('dashboard'))
+    return redirect(url_for('dashboard'))
 
     return render_template('saida.html')
 
