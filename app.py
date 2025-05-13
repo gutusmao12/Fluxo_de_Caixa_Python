@@ -170,7 +170,7 @@ def adicionar_saida():
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO entradas (descricao, valor, data) VALUES (%s, %s, %s)", (descricao, valor, data))
+        cursor.execute("INSERT INTO saidas (descricao, valor, data) VALUES (%s, %s, %s)", (descricao, valor, data))
         conn.commit()
         cursor.close()
         conn.close()
