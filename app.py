@@ -175,7 +175,7 @@ def adicionar_saida():
         cursor.close()
         conn.close()
 
-    return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard'))
 
     return render_template('saida.html')
 
