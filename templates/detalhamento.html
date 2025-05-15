@@ -25,7 +25,7 @@
         <td>{{ entrada[1] }}</td>
         <td>{{ entrada[2] | formata_brl }}</td>
         <td>{{ entrada[3] | formata_data }}</td>
-        <td>
+        <td style="display: inline-flex">
             <a href="{{ url_for('editar_entrada', id=entrada[0]) }}" title="Editar">
                 <i class="fas fa-pen btn" style="cursor:pointer;"></i>
             </a>
@@ -53,7 +53,7 @@
         <td>{{ saida[1] }}</td>
         <td>{{ saida[2] | formata_brl }}</td>
         <td>{{ saida[3] | formata_data }}</td>
-        <td>
+        <td style="display: inline-flex">
             <a href="{{ url_for('editar_saida', id=saida[0]) }}" title="Editar">
                 <i class="fas fa-pen btn" style="cursor:pointer;"></i>
             </a>
