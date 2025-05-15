@@ -21,10 +21,10 @@
     </tr>
     {% for entrada in entradas %}
     <tr>
-        <td>{{ saida[0]  }}</td>
-        <td>{{ saida[1] }}</td>
-        <td>{{ saida[2] | formata_brl }}</td>
-        <td>{{ saida[3] | formata_data }}</td>
+        <td>{{ entrada[0]  }}</td>
+        <td>{{ entrada[1] }}</td>
+        <td>{{ entrada[2] | formata_brl }}</td>
+        <td>{{ entrada[3] | formata_data }}</td>
         <td><a href="{{ url_for('editar_entrada', id=entrada[0]) }}" class="button">Editar</a></td>
     </tr>
     {% endfor %}
