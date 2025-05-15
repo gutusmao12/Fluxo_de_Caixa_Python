@@ -36,11 +36,11 @@ def detalhamento():
     cursor = conn.cursor()
 
     # Buscar entradas
-    cursor.execute("SELECT descricao, valor, data FROM entradas ORDER BY data DESC")
+    cursor.execute("SELECT id, descricao, valor, data FROM entradas ORDER BY data DESC")
     entradas = cursor.fetchall()
 
     # Buscar saídas
-    cursor.execute("SELECT descricao, valor, data FROM saidas ORDER BY data DESC")
+    cursor.execute("SELECT id, descricao, valor, data FROM saidas ORDER BY data DESC")
     saidas = cursor.fetchall()
 
     cursor.close()
