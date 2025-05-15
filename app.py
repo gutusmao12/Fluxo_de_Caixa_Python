@@ -49,8 +49,8 @@ def detalhamento():
     return render_template('detalhamento.html', entradas=entradas, saidas=saidas)
 
 # --- Editar Entrada ---
-@app.route('/editar_entrada/<descricao>', methods=['GET', 'POST'])
-def editar_entrada(descricao):
+@app.route('/editar_entrada/<int:id>', methods=['GET', 'POST'])
+def editar_entrada(id):
     if 'usuario' not in session:
         return redirect(url_for('login'))
 
@@ -60,13 +60,16 @@ def editar_entrada(descricao):
     if request.method == 'POST':
         novo_valor = request.form['valor']
         nova_descricao = request.form['descricao']
-        cursor.execute("UPDATE entradas SET descricao = %s, valor = %s WHERE descricao = %s", (nova_descricao, novo_valor, descricao))
+        cursor.execute(
+            "UPDATE entradas SET descricao = %s, valor = %s WHERE id = %s",
+            (nova_descricao, novo_valor, id)
+        )
         conn.commit()
         cursor.close()
         conn.close()
         return redirect(url_for('detalhamento'))
 
-    cursor.execute("SELECT descricao, valor FROM entradas WHERE descricao = %s", (descricao,))
+    cursor.execute("SELECT id, descricao, valor FROM entradas WHERE id = %s", (id,))
     entrada = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -74,8 +77,8 @@ def editar_entrada(descricao):
 
 
 # --- Editar Saída ---
-@app.route('/editar_saida/<descricao>', methods=['GET', 'POST'])
-def editar_saida(descricao):
+@app.route('/editar_saida/<int:id>', methods=['GET', 'POST'])
+def editar_saida(id):
     if 'usuario' not in session:
         return redirect(url_for('login'))
 
@@ -85,17 +88,46 @@ def editar_saida(descricao):
     if request.method == 'POST':
         novo_valor = request.form['valor']
         nova_descricao = request.form['descricao']
-        cursor.execute("UPDATE saidas SET descricao = %s, valor = %s WHERE descricao = %s", (nova_descricao, novo_valor, descricao))
+        cursor.execute(
+            "UPDATE saidas SET descricao = %s, valor = %s WHERE id = %s",
+            (nova_descricao, novo_valor, id)
+        )
         conn.commit()
         cursor.close()
         conn.close()
         return redirect(url_for('detalhamento'))
 
-    cursor.execute("SELECT descricao, valor FROM saidas WHERE descricao = %s", (descricao,))
+    cursor.execute("SELECT id, descricao, valor FROM saidas WHERE id = %s", (id,))
     saida = cursor.fetchone()
     cursor.close()
     conn.close()
     return render_template('editar.html', tipo='saida', item=saida)
+
+@app.route('/excluir_entrada/<int:id>')
+def excluir_entrada(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM entradas WHERE id = %s", (id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('detalhamento'))
+
+@app.route('/excluir_saida/<int:id>')
+def excluir_saida(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM saidas WHERE id = %s", (id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('detalhamento'))
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
