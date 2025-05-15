@@ -70,3 +70,9 @@ th {
     background-color: #007BFF;
     color: white;
 }
+
+a.btn,
+a.btn-entrar,
+a.btn-cancelar {
+  text-decoration: none;
+}
