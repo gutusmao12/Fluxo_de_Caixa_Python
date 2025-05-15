@@ -17,10 +17,10 @@
             <label for="data">Data:</label>
             <input type="date" name="data" required>
 
-            <input type="submit" value="Salvar" class="button">
+            <input type="submit" class="btn" value="Salvar" class="button">
         </form>
         <br>
-        <a href="/dashboard" class="button">⬅ Voltar</a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-cancelar">⬅ Voltar</a>
     </div>
 </body>
 </html>

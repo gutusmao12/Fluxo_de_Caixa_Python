@@ -22,18 +22,28 @@ h2 {
     font-size: 18px;
 }
 
-a.button {
-    display: inline-block;
+button, .btn {
     padding: 10px 20px;
-    margin: 10px;
-    background-color: #007BFF;
+    background-color: #3498db; /* azul padrão */
     color: white;
+    border: none;
     border-radius: 5px;
-    text-decoration: none;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
 }
 
-a.button:hover {
-    background-color: #0056b3;
+button:hover, .btn:hover {
+    background-color: #2980b9; /* azul escuro ao passar o mouse */
+}
+
+/* Botão cancelar - vermelho */
+.btn-cancelar {
+    background-color: #e74c3c; /* vermelho */
+}
+
+.btn-cancelar:hover {
+    background-color: #c0392b; /* vermelho escuro ao passar o mouse */
 }
 
 table {
