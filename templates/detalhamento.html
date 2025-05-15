@@ -26,16 +26,12 @@
         <td>{{ entrada[2] | formata_brl }}</td>
         <td>{{ entrada[3] | formata_data }}</td>
         <td>
-            <td>
-                <a href="{{ url_for('editar_entrada', id=entrada[0]) }}" title="Editar">
-                    <i class="fas fa-pen btn" style="cursor:pointer;"></i>
-                </a>
-            </td>
-            <td>
-                <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_entrada', id=entrada[0]) }}')"title="Excluir">
-                    <i class="fas fa-trash btn btn-cancelar" style="cursor:pointer;"></i>
-                </a>
-            </td>
+            <a href="{{ url_for('editar_entrada', id=entrada[0]) }}" title="Editar">
+                <i class="fas fa-pen btn" style="cursor:pointer;"></i>
+            </a>
+            <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_entrada', id=entrada[0]) }}')"title="Excluir">
+                <i class="fas fa-trash btn btn-cancelar" style="cursor:pointer;"></i>
+            </a>
         </td>
     </tr>
     {% endfor %}
@@ -58,16 +54,12 @@
         <td>{{ saida[2] | formata_brl }}</td>
         <td>{{ saida[3] | formata_data }}</td>
         <td>
-            <td>
-                <a href="{{ url_for('editar_saida', id=saida[0]) }}" title="Editar">
-                    <i class="fas fa-pen btn" style="cursor:pointer;"></i>
-                </a>
-            </td>
-            <td>
-                <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_saida', id=saida[0]) }}')"title="Excluir">
-                    <i class="fas fa-trash btn btn-cancelar" style="cursor:pointer;"></i>
-                </a>
-            </td>
+            <a href="{{ url_for('editar_saida', id=saida[0]) }}" title="Editar">
+                <i class="fas fa-pen btn" style="cursor:pointer;"></i>
+            </a>
+            <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_saida', id=saida[0]) }}')"title="Excluir">
+                <i class="fas fa-trash btn btn-cancelar" style="cursor:pointer;"></i>
+            </a>
         </td>
     </tr>
     {% endfor %}
