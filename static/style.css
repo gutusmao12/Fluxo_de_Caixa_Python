@@ -46,6 +46,10 @@ button:hover, .btn:hover {
     background-color: #c0392b; /* vermelho escuro ao passar o mouse */
 }
 
+.btn-entrar {
+    background-color: green;
+}
+
 table {
     width: 90%;
     margin: 20px auto;

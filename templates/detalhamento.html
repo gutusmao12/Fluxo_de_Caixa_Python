@@ -13,6 +13,7 @@
 <h3>Entradas</h3>
 <table>
     <tr>
+        <th>ID</th>
         <th>Descrição</th>
         <th>Valor (R$)</th>
         <th>Data</th>
@@ -27,12 +28,12 @@
         <td>
             <td>
                 <a href="{{ url_for('editar_entrada', id=entrada[0]) }}" title="Editar">
-                    <i class="fas fa-pen text-blue-500 hover:text-blue-700" style="cursor:pointer;"></i>
+                    <i class="fas fa-pen btn" style="cursor:pointer;"></i>
                 </a>
             </td>
             <td>
                 <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_entrada', id=entrada[0]) }}')"title="Excluir">
-                    <i class="fas fa-trash text-red-500 hover:text-red-700" style="cursor:pointer;"></i>
+                    <i class="fas fa-trash btn-cancelar" style="cursor:pointer;"></i>
                 </a>
             </td>
         </td>
@@ -44,6 +45,7 @@
 <h3>Saídas</h3>
 <table>
     <tr>
+        <th>ID</th>
         <th>Descrição</th>
         <th>Valor (R$)</th>
         <th>Data</th>
@@ -58,12 +60,12 @@
         <td>
             <td>
                 <a href="{{ url_for('editar_saida', id=saida[0]) }}" title="Editar">
-                    <i class="fas fa-pen text-blue-500" style="cursor:pointer;"></i>
+                    <i class="fas fa-pen btn" style="cursor:pointer;"></i>
                 </a>
             </td>
             <td>
                 <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_saida', id=saida[0]) }}')"title="Excluir">
-                    <i class="fas fa-trash hover:text-red-500" style="cursor:pointer; color: text-red-700"></i>
+                    <i class="fas fa-trash btn-cancelar" style="cursor:pointer;"></i>
                 </a>
             </td>
         </td>
