@@ -47,6 +47,10 @@ button:hover, .btn:hover {
 }
 
 .btn-entrar {
+    background-color: rgb(1, 207, 1);
+}
+
+.btn-entrar:hover {
     background-color: green;
 }
 
