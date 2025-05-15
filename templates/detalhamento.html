@@ -21,11 +21,22 @@
     </tr>
     {% for entrada in entradas %}
     <tr>
-        <td>{{ entrada[0]  }}</td>
+        <td>{{ entrada[0] }}</td>
         <td>{{ entrada[1] }}</td>
         <td>{{ entrada[2] | formata_brl }}</td>
         <td>{{ entrada[3] | formata_data }}</td>
-        <td><a href="{{ url_for('editar_entrada', id=entrada[0]) }}" class="button">Editar</a></td>
+        <td>
+            <td>
+            <a href="{{ url_for('editar_entrada', id=entrada[0]) }}" title="Editar">
+                <i class="fas fa-pen text-blue-500 hover:text-blue-700" style="cursor:pointer;"></i>
+            </a>
+        </td>
+        <td>
+            <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_entrada', id=entrada[0]) }}')"title="Excluir">
+                <i class="fas fa-trash text-red-500 hover:text-red-700" style="cursor:pointer;"></i>
+            </a>
+        </td>
+        </td>
     </tr>
     {% endfor %}
 </table>
@@ -42,17 +53,17 @@
     </tr>
     {% for saida in saidas %}
     <tr>
-        <td>{{ saida[0]  }}</td>
+        <td>{{ saida[0] }}</td>
         <td>{{ saida[1] }}</td>
         <td>{{ saida[2] | formata_brl }}</td>
         <td>{{ saida[3] | formata_data }}</td>
         <td>
-            <a href="{{ url_for('editar_entrada', id=entrada[0]) }}" title="Editar">
+            <a href="{{ url_for('editar_saida', id=saida[0]) }}" title="Editar">
                 <i class="fas fa-pen text-blue-500 hover:text-blue-700" style="cursor:pointer;"></i>
             </a>
         </td>
         <td>
-            <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_entrada', id=entrada[0]) }}')"title="Excluir">
+            <a href="#" onclick="confirmarExclusao('{{ url_for('excluir_saida', id=saida[0]) }}')"title="Excluir">
                 <i class="fas fa-trash text-red-500 hover:text-red-700" style="cursor:pointer;"></i>
             </a>
         </td>
